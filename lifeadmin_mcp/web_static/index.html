@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101b21">
+    <meta name="description" content="A private, local-first place to keep your deadlines under control.">
+    <title>LifeAdmin — Your deadlines, under control</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="LifeAdmin home">
+          <span class="brand-mark" aria-hidden="true">L</span>
+          <span>lifeadmin<span class="brand-period">.</span></span>
+        </a>
+        <p class="sidebar-label">YOUR SPACE</p>
+        <nav class="nav-list" aria-label="Reminder views">
+          <button class="nav-item is-active" type="button" data-filter="upcoming" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">↗</span>
+            <span>Upcoming</span>
+            <span class="nav-count" data-count="upcoming">0</span>
+          </button>
+          <button class="nav-item" type="button" data-filter="overdue">
+            <span class="nav-icon overdue-icon" aria-hidden="true">!</span>
+            <span>Overdue</span>
+            <span class="nav-count" data-count="overdue">0</span>
+          </button>
+          <button class="nav-item" type="button" data-filter="completed">
+            <span class="nav-icon" aria-hidden="true">✓</span>
+            <span>Completed</span>
+            <span class="nav-count" data-count="completed">0</span>
+          </button>
+          <button class="nav-item" type="button" data-filter="all">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            <span>All reminders</span>
+            <span class="nav-count" data-count="all">0</span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="local-indicator" aria-hidden="true"></span>
+          <div>
+            <strong>Private by design</strong>
+            <span>Saved on this device</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-copy">
+            <span class="eyebrow" id="today-label">YOUR DAY</span>
+            <p id="today-date">Your deadlines, in one place.</p>
+          </div>
+          <button class="button button-primary" id="add-reminder" type="button">
+            <span aria-hidden="true">＋</span> Add reminder
+          </button>
+        </header>
+
+        <section class="welcome" aria-labelledby="welcome-title">
+          <div>
+            <p class="eyebrow">A LITTLE MORE HEADSPACE</p>
+            <h1 id="welcome-title">Make room for <span>what matters.</span></h1>
+            <p class="welcome-copy">Keep the dates that matter close, and let the small stuff feel a little lighter.</p>
+          </div>
+          <div class="welcome-art" aria-hidden="true">
+            <div class="art-sun"></div>
+            <div class="art-card art-card-back"></div>
+            <div class="art-card art-card-front">
+              <span class="art-check">✓</span>
+              <span class="art-line"></span>
+              <span class="art-line short"></span>
+              <span class="art-date">ON YOUR TIME</span>
+            </div>
+            <span class="art-spark spark-one">✳</span>
+            <span class="art-spark spark-two">✦</span>
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Reminder summary">
+          <article class="stat-card">
+            <span class="stat-label">UP NEXT</span>
+            <strong class="stat-value" data-stat="upcoming">0</strong>
+            <span class="stat-caption">on your calendar</span>
+            <span class="stat-decoration decoration-lime" aria-hidden="true">↗</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">NEEDS A LOOK</span>
+            <strong class="stat-value" data-stat="overdue">0</strong>
+            <span class="stat-caption">past their due date</span>
+            <span class="stat-decoration decoration-coral" aria-hidden="true">!</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">DONE & DUSTED</span>
+            <strong class="stat-value" data-stat="completed">0</strong>
+            <span class="stat-caption">you made it happen</span>
+            <span class="stat-decoration decoration-cyan" aria-hidden="true">✓</span>
+          </article>
+        </section>
+
+        <section class="reminders-section" aria-labelledby="list-title">
+          <div class="list-heading">
+            <div>
+              <p class="eyebrow">YOUR LIST</p>
+              <h2 id="list-title">Coming up</h2>
+            </div>
+            <label class="search-box">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <span class="visually-hidden">Search reminders</span>
+              <input id="search" type="search" placeholder="Find a reminder…" autocomplete="off">
+              <kbd>/</kbd>
+            </label>
+          </div>
+
+          <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+          <div id="loading" class="loading-state" role="status">Loading your reminders…</div>
+          <div id="reminder-list" class="reminder-list" aria-live="polite"></div>
+        </section>
+
+        <footer class="app-footer">
+          <span><span class="footer-lock" aria-hidden="true">●</span> Your reminders stay on this device.</span>
+          <span id="timezone-label"></span>
+        </footer>
+      </main>
+    </div>
+
+    <dialog id="reminder-dialog" class="reminder-dialog" aria-labelledby="dialog-title">
+      <form id="reminder-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">MAKE A NOTE</p>
+            <h2 id="dialog-title">Add a reminder</h2>
+          </div>
+          <button class="icon-button" id="close-dialog" type="button" aria-label="Close dialog">×</button>
+        </div>
+        <label class="field-label" for="title">What do you need to remember?<span aria-hidden="true">*</span></label>
+        <input class="text-field" id="title" name="title" type="text" maxlength="200" placeholder="e.g. Renew car insurance" required>
+        <div class="field-row">
+          <label class="field-label" for="due-date">Due date<span aria-hidden="true">*</span>
+            <input class="text-field" id="due-date" name="due_date" type="date" required>
+          </label>
+          <label class="field-label" for="due-time">Time <span class="optional">(optional)</span>
+            <input class="text-field" id="due-time" name="due_time" type="time">
+          </label>
+        </div>
+        <label class="field-label" for="category">Category <span class="optional">(optional)</span></label>
+        <input class="text-field" id="category" name="category" type="text" maxlength="80" placeholder="Bills, health, home…">
+        <label class="field-label" for="notes">Notes <span class="optional">(optional)</span></label>
+        <textarea class="text-field notes-field" id="notes" name="notes" maxlength="2000" rows="3" placeholder="Anything else you want to keep in mind?"></textarea>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button class="button button-quiet" id="cancel-dialog" type="button">Cancel</button>
+          <button class="button button-primary" id="save-reminder" type="submit">Save reminder</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

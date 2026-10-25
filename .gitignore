@@ -1,0 +1,53 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+credentials.json
+service-account*.json
+id_rsa*
+*.pfx
+*.p12
+
+# Python environments, caches, and build artifacts
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+*.egg
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+eval-results*.json
+
+# Editor configuration
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
